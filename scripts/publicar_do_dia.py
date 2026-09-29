@@ -35,7 +35,8 @@ def main():
         return
 
     ensaio = os.environ.get("ENSAIO", "").lower() in ("1", "true", "yes")
-    cred = {"IG_USER_ID": os.environ["IG_USER_ID"], "IG_TOKEN": os.environ["IG_TOKEN"]}
+    cred = {"IG_USER_ID": os.environ.get("IG_USER_ID") or "me",
+            "IG_TOKEN": os.environ["IG_TOKEN"]}
     print("dia %d — %s" % (alvo["dia"], alvo["titulo"]))
 
     feito = {"dia": alvo["dia"], "data": alvo["data"], "ensaio": ensaio}

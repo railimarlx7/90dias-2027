@@ -1,41 +1,43 @@
-# name: publicar o card do dia
+name: publicar o card do dia
 
-# on:
-#   schedule:
-#     # 09:00 UTC = 06:00 em Brasília. O cron do GitHub é sempre em UTC e pode
-#     # atrasar-se alguns minutos quando a plataforma está com carga.
-#     - cron: "0 9 * * *"
-#   workflow_dispatch:
-#     inputs:
-#       dia:
-#         description: "forçar um dia (vazio = o de hoje)"
-#         required: false
-#       ensaio:
-#         description: "só criar o contentor, sem publicar"
-#         type: boolean
-#         default: true
+on:
+  schedule:
+    # 09:00 UTC = 06:00 em Brasília. O cron do GitHub é sempre em UTC e pode
+    # atrasar-se alguns minutos quando a plataforma está com carga.
+    - cron: "0 9 * * *"
+    # TEMPORÁRIO, só para o ensaio de hoje — apagar depois
+    - cron: "24 21 * * *"
+  workflow_dispatch:
+    inputs:
+      dia:
+        description: "forçar um dia (vazio = o de hoje)"
+        required: false
+      ensaio:
+        description: "só criar o contentor, sem publicar"
+        type: boolean
+        default: true
 
-# permissions:
-#   contents: write        # para escrever o registo, que também mantém o cron vivo
+permissions:
+  contents: write        # para escrever o registo, que também mantém o cron vivo
 
-# jobs:
-#   publicar:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-#       - name: publicar no Instagram
-#         env:
-#           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-#           IG_TOKEN: ${{ secrets.IG_TOKEN }}
-#           DIA: ${{ inputs.dia }}
-#           ENSAIO: ${{ inputs.ensaio }}
-#         run: python3 scripts/publicar_do_dia.py
+      - name: publicar no Instagram
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          DIA: ${{ inputs.dia }}
+          ENSAIO: ${{ inputs.ensaio }}
+        run: python3 scripts/publicar_do_dia.py
 
-#       - name: guardar o registo
-#         run: |
-#           git config user.name  "publicador"
-#           git config user.email "publicador@users.noreply.github.com"
-#           git add registo/
-#           git diff --cached --quiet || git commit -m "registo: $(date -u +%F)"
-#           git push
+      - name: guardar o registo
+        run: |
+          git config user.name  "publicador"
+          git config user.email "publicador@users.noreply.github.com"
+          git add registo/
+          git diff --cached --quiet || git commit -m "registo: $(date -u +%F)"
+          git push

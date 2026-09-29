@@ -17,7 +17,10 @@ Uso:
 """
 import argparse, json, os, sys, time, urllib.parse, urllib.request
 
-API = "https://graph.facebook.com/v21.0"
+# O token é da "Instagram API with Instagram Login" (começa por IGAA) e fala com
+# graph.instagram.com, não com graph.facebook.com. Nesse caminho o próprio token já
+# identifica a conta, por isso o id pode ser "me".
+API = os.environ.get("IG_API", "https://graph.instagram.com/v23.0")
 AQUI = os.path.dirname(os.path.abspath(__file__))
 
 
