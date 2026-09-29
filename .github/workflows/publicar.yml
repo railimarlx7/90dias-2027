@@ -5,8 +5,6 @@ on:
     # 09:00 UTC = 06:00 em Brasília. O cron do GitHub é sempre em UTC e pode
     # atrasar-se alguns minutos quando a plataforma está com carga.
     - cron: "0 9 * * *"
-    # TEMPORÁRIO, só para o ensaio de hoje — apagar depois
-    - cron: "24 21 * * *"
   workflow_dispatch:
     inputs:
       dia:
