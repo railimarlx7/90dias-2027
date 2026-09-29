@@ -1,0 +1,22 @@
+name: renovar o token do Instagram
+
+# O token do Instagram dura 60 dias e a série dura 90: sem isto, a publicação pára
+# a meio. Cada renovação estende por mais 60 dias, por isso correr de semana a semana
+# deixa sempre uma margem grande. Segunda-feira às 05:00 UTC, longe da hora em que o
+# card é publicado, para um problema não atrapalhar o outro.
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+jobs:
+  renovar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: renovar e regravar o secret
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}     # precisa de permissão de escrita em secrets
+        run: python3 scripts/renovar_token_ci.py
