@@ -2,9 +2,13 @@ name: publicar o card do dia
 
 on:
   schedule:
-    # 09:00 UTC = 06:00 em Brasília. O cron do GitHub é sempre em UTC e pode
-    # atrasar-se alguns minutos quando a plataforma está com carga.
-    - cron: "0 9 * * *"
+    # O card sai às 6 da manhã em Portugal. O cron do GitHub é sempre em UTC e não
+    # segue o horário de verão, que acaba a 25 de outubro, a meio da série — por
+    # isso dispara duas vezes e o script escolhe. Em horário de verão serve a das
+    # 05:00; de 25 de outubro em diante, a das 06:00. A outra sai sem publicar.
+    # A plataforma costuma atrasar-se 5 a 15 minutos, e isso é aceitável aqui.
+    - cron: "0 5 * * *"
+    - cron: "0 6 * * *"
   workflow_dispatch:
     inputs:
       dia:
