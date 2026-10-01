@@ -1,0 +1,23 @@
+name: o card de hoje saiu?
+
+# Corre 30 minutos depois de cada passagem do publicador. Como o cron do GitHub é
+# sempre em UTC e Portugal muda de hora a 25 de outubro, dispara às 05:30, 06:30 e
+# 07:30 UTC; o script percebe qual delas interessa e, acima de tudo, só dá o alarme
+# quando já não falta nenhuma passagem do publicador nesse dia — senão acusaria
+# falha de algo que ainda ia sair na tentativa seguinte.
+#
+# Quando falha, o GitHub manda e-mail ao dono do repositório. É esse o aviso.
+on:
+  schedule:
+    - cron: "30 5,6,7 * * *"
+  workflow_dispatch:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: conferir na Meta
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python3 scripts/verificar_publicacao.py
